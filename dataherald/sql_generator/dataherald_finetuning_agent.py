@@ -287,7 +287,7 @@ class GenerateSQL(BaseSQLDatabaseTool, BaseTool):
                 "FINETUNED_MODEL", "gpt-4-1106-preview"
             ),  # gpt-4-1106-preview is included only for avoiding the error
             api_key=self.api_key,
-            temperature=0.0,
+            temperature=0.01,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
@@ -457,7 +457,7 @@ class DataheraldFinetuningAgent(SQLGenerator):
         storage = self.system.instance(DB)
         self.llm = self.model.get_model(
             database_connection=database_connection,
-            temperature=0,
+            temperature=0.01,
             model_name=os.getenv("LLM_MODEL", "gpt-4-1106-preview"),
         )
         repository = TableDescriptionRepository(storage)

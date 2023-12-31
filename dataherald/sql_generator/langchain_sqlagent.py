@@ -30,11 +30,11 @@ class LangChainSQLAgentSQLGenerator(SQLGenerator):
         database_connection: DatabaseConnection,
         context: List[dict] = None,
         generate_csv: bool = False,
-    ) -> Response:  # type: ignore
+    ) -> Response:
         logger.info(f"Generating SQL response to question: {str(user_question.dict())}")
         self.llm = self.model.get_model(
             database_connection=database_connection,
-            temperature=0,
+            temperature=0.01,
             model_name=os.getenv("LLM_MODEL", "gpt-4-1106-preview"),
         )
         self.database = SQLDatabase.get_sql_engine(database_connection)

@@ -345,7 +345,8 @@ class SchemaSQLDatabaseTool(BaseSQLDatabaseTool, BaseTool):
         run_manager: CallbackManagerForToolRun | None = None,  # noqa: ARG002
     ) -> str:
         """Get the schema for tables in a comma-separated list."""
-        table_names_list = table_names.split(", ")
+        table_names_list = table_names.replace('\n', '').split(", ")
+        print(table_names_list)
         tables_schema = ""
         for table in self.db_scan:
             if table.table_name in table_names_list:
@@ -384,7 +385,7 @@ class InfoRelevantColumns(BaseSQLDatabaseTool, BaseTool):
         run_manager: CallbackManagerForToolRun | None = None,  # noqa: ARG002
     ) -> str:
         """Get the column level information."""
-        items_list = column_names.split(", ")
+        items_list = column_names.replace('\n', '').split(", ")
         column_full_info = ""
         for item in items_list:
             table_name, column_name = item.split(" -> ")
@@ -609,7 +610,7 @@ class DataheraldSQLAgent(SQLGenerator):
         storage = self.system.instance(DB)
         self.llm = self.model.get_model(
             database_connection=database_connection,
-            temperature=0,
+            temperature=0.01,
             model_name=os.getenv("LLM_MODEL", "gpt-4-1106-preview"),
         )
         repository = TableDescriptionRepository(storage)
